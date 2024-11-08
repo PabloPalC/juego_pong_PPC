@@ -1,5 +1,6 @@
 window.onload = function () {
     const TOPESUPERIOR = 5;
+    const fps = 60;
     const TOPEINFERIOR = 270;
     let canvas, ctx;
     let pelota;
@@ -39,7 +40,7 @@ window.onload = function () {
 
     function empezarPartida() {
         pintarPong();
-        let id = setInterval(pintarPong, 16);
+        let id = setInterval(pintarPong, 1000/fps);
     }
 
     function pintarPong() {
