@@ -1,9 +1,8 @@
 window.onload = function () {
-
     const TOPESUPERIOR = 5;
     const TOPEINFERIOR = 270;
     let canvas, ctx;
-    let player1, player2, pelota;
+    let pelota;
     let yArriba, yAbajo;
 
     class Ball {
@@ -24,6 +23,23 @@ window.onload = function () {
             this.velocidad = 3;
             this.color = "white";
         }
+
+        generarPosicionArriba() {
+            this.y = this.y - this.velocidad;
+
+            if (this.y < TOPESUPERIOR) this.y = TOPESUPERIOR;
+        }
+
+        generarPosicionAbajo() {
+            this.y = this.y + this.velocidad;
+
+            if (this.y > TOPEINFERIOR) this.y = TOPEINFERIOR;
+        }
+    }
+
+    function empezarPartida() {
+        pintarPong();
+        let id = setInterval(pintarPong, 16);
     }
 
     function pintarPong() {
@@ -35,24 +51,6 @@ window.onload = function () {
 
         if (yArriba) jugador1.generarPosicionArriba();
         if (yAbajo) jugador1.generarPosicionAbajo();
-
-    }
-
-
-    Jugadores.prototype.generarPosicionAbajo = function () {
-
-        this.y = this.y + this.velocidad;
-
-        if (this.y > TOPEINFERIOR) this.y = TOPEINFERIOR;
-
-    }
-
-    Jugadores.prototype.generarPosicionArriba = function () {
-
-        this.y = this.y - this.velocidad;
-
-        if (this.y < TOPESUPERIOR) this.y = TOPESUPERIOR;
-
     }
 
     function activaMovimiento(evt) {
@@ -92,8 +90,5 @@ window.onload = function () {
 
     canvas = document.getElementById("miCanvas");
     ctx = canvas.getContext("2d");
-
-    let id = setInterval(pintarPong, 16);
-
-    pintarPong();
+    document.getElementById("start").onclick = empezarPartida;
 };
