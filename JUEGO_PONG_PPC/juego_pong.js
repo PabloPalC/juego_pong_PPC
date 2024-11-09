@@ -1,9 +1,9 @@
 window.onload = function () {
     const TOPESUPERIOR = 5;
-    const fps = 60;
     const TOPEINFERIOR = 270;
+    const fps = 60;
     let canvas, ctx;
-    let pelota;
+    let jugador1, jugador2, pelota;
     let yArriba, yAbajo;
 
     class Ball {
@@ -12,7 +12,15 @@ window.onload = function () {
             this.y = 175;
             this.lado = 15;
             this.color = "white";
+            this.velocidad = 4;
         }
+
+        moverPelota(){
+            this.x += this.velocidad;
+            this.y += this.velocidad;
+        }
+
+
     }
 
     class Jugadores {
@@ -52,6 +60,8 @@ window.onload = function () {
 
         if (yArriba) jugador1.generarPosicionArriba();
         if (yAbajo) jugador1.generarPosicionAbajo();
+
+        pelota.moverPelota();
     }
 
     function activaMovimiento(evt) {
