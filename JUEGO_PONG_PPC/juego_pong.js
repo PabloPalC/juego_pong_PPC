@@ -1,4 +1,5 @@
 window.onload = function () {
+   
     const TOPESUPERIOR = 5;
     const TOPEINFERIOR = 270;
     const fps = 60;
@@ -6,6 +7,7 @@ window.onload = function () {
     let jugador1, jugador2, pelota;
     let yArriba, yAbajo;
 
+    //Clase para crear la pelota.
     class Ball {
         constructor() {
             this.x = 300;
@@ -22,6 +24,8 @@ window.onload = function () {
 
 
     }
+
+    // Clase para crear los jugadores
 
     class Jugadores {
         constructor(x) {
@@ -46,10 +50,13 @@ window.onload = function () {
         }
     }
 
+    // Funcion que activa la partida al darle al boton START.
+
     function empezarPartida() {
         pintarPong();
         let id = setInterval(pintarPong, 1000/fps);
     }
+    //Funcion del juego
 
     function pintarPong() {
         ctx.clearRect(0, 0, 600, 350);
@@ -64,6 +71,8 @@ window.onload = function () {
         pelota.moverPelota();
     }
 
+    // Function para activar la tecla de los movimientos.
+
     function activaMovimiento(evt) {
         switch (evt.keyCode) {
             // Arriba
@@ -77,6 +86,8 @@ window.onload = function () {
                 break;
         }
     }
+
+    // Function para desactivar la tecla de los movimientos.
 
     function desactivaMovimiento(evt) {
         switch (evt.keyCode) {
@@ -101,5 +112,6 @@ window.onload = function () {
 
     canvas = document.getElementById("miCanvas");
     ctx = canvas.getContext("2d");
-    document.getElementById("start").onclick = empezarPartida;
+    document.getElementById("start").onclick = empezarPartida; // Manejador para ejecutar la funcion de empezarPartida.
+    
 };
