@@ -1,7 +1,7 @@
 window.onload = function () {
    
-    const TOPESUPERIOR = 5;
-    const TOPEINFERIOR = 270;
+    const TOPESUPERIOR = 10;
+    const TOPEINFERIOR = 265;
     const fps = 60;
     let canvas, ctx;
     let jugador1, jugador2, pelota;
@@ -113,5 +113,5 @@ window.onload = function () {
     canvas = document.getElementById("miCanvas");
     ctx = canvas.getContext("2d");
     document.getElementById("start").onclick = empezarPartida; // Manejador para ejecutar la funcion de empezarPartida.
-    
+
 };
