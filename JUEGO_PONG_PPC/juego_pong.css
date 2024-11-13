@@ -3,6 +3,7 @@
     border: solid 4px #ffffff;
     margin: 20px;
     background-color: black;
+    border-radius: 8px;
 }
 
 body {
@@ -14,6 +15,7 @@ button {
     color: white;
     border: dashed 2px;
     font-size: large;
+    border-radius: 4px;
 }
 
 div {

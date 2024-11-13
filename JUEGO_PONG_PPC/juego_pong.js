@@ -14,15 +14,35 @@ window.onload = function () {
             this.y = 175;
             this.lado = 15;
             this.color = "white";
-            this.velocidad = 4;
+            this.velocidad = 3.75;
+            this.bajando=false;
         }
 
         moverPelota(){
-            this.x += this.velocidad;
-            this.y += this.velocidad;
+
+            if (this.y < 15) { 
+
+                this.bajando=true;
+
+                }
+
+            else if(this.y > 335) {
+                
+                this.bajando=false; 
+            }
+
+            if(this.bajando){
+
+                this.x += this.velocidad;
+                this.y += this.velocidad;
+
+            } else if(this.bajando===false){
+
+                this.x += this.velocidad;
+                this.y -= this.velocidad;
+            }
+
         }
-
-
     }
 
     // Clase para crear los jugadores
@@ -113,5 +133,5 @@ window.onload = function () {
     canvas = document.getElementById("miCanvas");
     ctx = canvas.getContext("2d");
     document.getElementById("start").onclick = empezarPartida; // Manejador para ejecutar la funcion de empezarPartida.
-
+    
 };
