@@ -6,6 +6,8 @@ window.onload = function () {
     let canvas, ctx;
     let jugador1, jugador2, pelota;
     let yArriba, yAbajo;
+    let marcadorJugador1=0;
+    let marcadorJugador2=0;
 
     //Clase para crear la pelota.
     class Ball {
@@ -14,19 +16,18 @@ window.onload = function () {
             this.y = 175;
             this.lado = 15;
             this.color = "white";
-            this.velocidad = 3.75;
+            this.velocidad = 3.5;
             this.bajando=false;
         }
 
         moverPelota(){
-
-            if (this.y < 15) { 
+            if (this.y < 0) { 
 
                 this.bajando=true;
 
                 }
 
-            else if(this.y > 335) {
+            else if(this.y > 335 ) {
                 
                 this.bajando=false; 
             }
@@ -42,15 +43,16 @@ window.onload = function () {
                 this.y -= this.velocidad;
             }
 
+            
         }
-    }
+    }   
 
     // Clase para crear los jugadores
 
     class Jugadores {
         constructor(x) {
             this.x = x;
-            this.y = 130;
+            this.y = 175;
             this.anchura = 15;
             this.altura = 75;
             this.velocidad = 3;
@@ -76,6 +78,7 @@ window.onload = function () {
         pintarPong();
         let id = setInterval(pintarPong, 1000/fps);
     }
+
     //Funcion del juego
 
     function pintarPong() {
@@ -89,6 +92,10 @@ window.onload = function () {
         if (yAbajo) jugador1.generarPosicionAbajo();
 
         pelota.moverPelota();
+
+        console.log(pelota.x);
+
+        pintarMarcador();
     }
 
     // Function para activar la tecla de los movimientos.
@@ -123,10 +130,34 @@ window.onload = function () {
         }
     }
 
+    // Funcion provisional que hay que mejorarla.
+
+    function haSidoPunto(){
+
+        if(pelota.x<0 && pelota.x < -3){
+            marcadorJugador2++;
+            pelota.x = 300;
+            pelota.y = 175;
+            pelota.moverPelota();
+        } else if(pelota.x>600 && pelota.x<602){
+            marcadorJugador1++;
+            pelota.x = 300;
+            pelota.y = 175;
+            pelota.moverPelota();
+        }
+
+    }
+    // Funcion para mostrar el marcador, (NO DEFINITIVA)
+    function pintarMarcador(){
+         ctx.font="50px Arial"
+         ctx.fillText(marcadorJugador1, 200, 55);
+         ctx.fillText(marcadorJugador2, 400, 55);
+         haSidoPunto();
+    }
+
     pelota = new Ball();
     jugador1 = new Jugadores(15);
     jugador2 = new Jugadores(570);
-
     document.addEventListener("keydown", activaMovimiento, false);
     document.addEventListener("keyup", desactivaMovimiento, false);
 
