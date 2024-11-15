@@ -139,14 +139,14 @@ window.onload = function () {
     function terminarPartida(){
         if(marcadorJugador1 === 10){
             ctx.font="25px Arial"
-            ctx.fillText("EL JUGADOR 1 HA GANADO LA PARTIDA.", 50, 325)
             ctx.fillStyle = "yellow"
+            ctx.fillText("EL JUGADOR 1 HA GANADO LA PARTIDA.", 50, 325)
             clearInterval(id);
 
         } else if(marcadorJugador2 === 10){
             ctx.font="25px Arial"
-            ctx.fillText("EL JUGADOR 2 HA GANADO LA PARTIDA.", 50, 325)
             ctx.fillStyle = "yellow"
+            ctx.fillText("EL JUGADOR 2 HA GANADO LA PARTIDA.", 50, 325)
             clearInterval(id);
 
         }
