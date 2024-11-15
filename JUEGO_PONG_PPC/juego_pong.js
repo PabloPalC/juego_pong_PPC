@@ -6,8 +6,9 @@ window.onload = function () {
     let canvas, ctx;
     let jugador1, jugador2, pelota;
     let yArriba, yAbajo;
-    let marcadorJugador1=0;
+    let marcadorJugador1=8;
     let marcadorJugador2=0;
+    let id;
 
     //Clase para crear la pelota.
     class Ball {
@@ -52,7 +53,7 @@ window.onload = function () {
     class Jugadores {
         constructor(x) {
             this.x = x;
-            this.y = 175;
+            this.y = 137;
             this.anchura = 15;
             this.altura = 75;
             this.velocidad = 3;
@@ -70,30 +71,33 @@ window.onload = function () {
 
             if (this.y > TOPEINFERIOR) this.y = TOPEINFERIOR;
         }
+
     }
 
     // Funcion que activa la partida al darle al boton START.
 
     function empezarPartida() {
         pintarPong();
-        let id = setInterval(pintarPong, 1000/fps);
+        id = setInterval(pintarPong, 1000/fps);
     }
 
     //Funcion del juego
 
     function pintarPong() {
+
+
         ctx.clearRect(0, 0, 600, 350);
         ctx.fillRect(pelota.x, pelota.y, pelota.lado, pelota.lado);
         ctx.fillRect(jugador1.x, jugador1.y, jugador1.anchura, jugador1.altura);
         ctx.fillRect(jugador2.x, jugador2.y, jugador2.anchura, jugador2.altura);
         ctx.fillStyle = pelota.color;
 
+        terminarPartida();
+
         if (yArriba) jugador1.generarPosicionArriba();
         if (yAbajo) jugador1.generarPosicionAbajo();
 
         pelota.moverPelota();
-
-        console.log(pelota.x);
 
         pintarMarcador();
     }
@@ -130,7 +134,26 @@ window.onload = function () {
         }
     }
 
-    // Funcion provisional que hay que mejorarla.
+    // Funcion para terminar la partida.
+
+    function terminarPartida(){
+        if(marcadorJugador1 === 10){
+            ctx.font="25px Arial"
+            ctx.fillText("EL JUGADOR 1 HA GANADO LA PARTIDA.", 50, 325)
+            ctx.fillStyle = "yellow"
+            clearInterval(id);
+
+        } else if(marcadorJugador2 === 10){
+            ctx.font="25px Arial"
+            ctx.fillText("EL JUGADOR 2 HA GANADO LA PARTIDA.", 50, 325)
+            ctx.fillStyle = "yellow"
+            clearInterval(id);
+
+        }
+    
+    }
+
+    // Funcion de suma de puntos.
 
     function haSidoPunto(){
 
@@ -147,22 +170,38 @@ window.onload = function () {
         }
 
     }
-    // Funcion para mostrar el marcador, (NO DEFINITIVA)
+
+    // Funcion para detectar colisiones.
+
+    /* function colisionConJugador(){
+
+        if (( R1Der > R2Izq ) & ( R1Izq < R2Der ) & ( R1Up > R2Down) & ( R1Down < R2Up) ) {
+        }
+
+    */ 
+        
+    // Funcion para mostrar el marcador.
     function pintarMarcador(){
          ctx.font="50px Arial"
          ctx.fillText(marcadorJugador1, 200, 55);
          ctx.fillText(marcadorJugador2, 400, 55);
          haSidoPunto();
+
     }
 
     pelota = new Ball();
+
     jugador1 = new Jugadores(15);
+
     jugador2 = new Jugadores(570);
+
     document.addEventListener("keydown", activaMovimiento, false);
     document.addEventListener("keyup", desactivaMovimiento, false);
 
     canvas = document.getElementById("miCanvas");
+
     ctx = canvas.getContext("2d");
+
     document.getElementById("start").onclick = empezarPartida; // Manejador para ejecutar la funcion de empezarPartida.
     
 };
