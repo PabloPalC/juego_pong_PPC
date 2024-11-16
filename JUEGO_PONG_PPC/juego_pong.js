@@ -3,6 +3,7 @@ window.onload = function () {
     const TOPESUPERIOR = 10;
     const TOPEINFERIOR = 265;
     const fps = 60;
+    const botonStart = document.getElementById("start")
     let canvas, ctx;
     let jugador1, jugador2, pelota;
     let yArriba, yAbajo;
@@ -11,40 +12,40 @@ window.onload = function () {
     let id;
 
     //Clase para crear la pelota.
+
     class Ball {
         constructor() {
             this.x = 300;
             this.y = 175;
-            this.lado = 15;
+            this.radio = 10; // El radio de la pelota, cuanto más radio, mas grande.
             this.color = "white";
             this.velocidad = 3.5;
-            this.bajando=false;
+            this.bajando = false;
         }
 
-        moverPelota(){
-            if (this.y < 0) { 
+        moverPelota() {
 
-                this.bajando=true;
-
-                }
-
-            else if(this.y > 335 ) {
-                
-                this.bajando=false; 
+            if (this.y - this.radio <= 0) { // Limite de arriba
+                this.bajando = true;
+            } else if (this.y + this.radio >= 350) { // Limite de abajo
+                this.bajando = false;
             }
-
-            if(this.bajando){
-
+    
+            if (this.bajando) {
                 this.x += this.velocidad;
                 this.y += this.velocidad;
-
-            } else if(this.bajando===false){
-
+            } else {
                 this.x += this.velocidad;
                 this.y -= this.velocidad;
             }
+        }
 
-            
+        dibujarPelota(ctx) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radio, 0, Math.PI * 2); // Dibujar un círculo
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
         }
     }   
 
@@ -79,6 +80,19 @@ window.onload = function () {
     function empezarPartida() {
         pintarPong();
         id = setInterval(pintarPong, 1000/fps);
+        botonStart.disabled = true;
+    }
+
+    function reiniciarPartida() {
+        clearInterval(id);
+        marcadorJugador1 = 0;
+        marcadorJugador2 = 0;
+        pelota = new Ball();
+        jugador1 = new Jugadores(15);
+        jugador2 = new Jugadores(570); 
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById("start").disabled = false;
+        pintarMarcador();
     }
 
     //Funcion del juego
@@ -87,7 +101,7 @@ window.onload = function () {
 
 
         ctx.clearRect(0, 0, 600, 350);
-        ctx.fillRect(pelota.x, pelota.y, pelota.lado, pelota.lado);
+        pelota.dibujarPelota(ctx);
         ctx.fillRect(jugador1.x, jugador1.y, jugador1.anchura, jugador1.altura);
         ctx.fillRect(jugador2.x, jugador2.y, jugador2.anchura, jugador2.altura);
         ctx.fillStyle = pelota.color;
@@ -136,49 +150,34 @@ window.onload = function () {
 
     // Funcion para terminar la partida.
 
-    function terminarPartida(){
-        if(marcadorJugador1 === 10){
-            ctx.font="25px Arial"
-            ctx.fillStyle = "yellow"
-            ctx.fillText("EL JUGADOR 1 HA GANADO LA PARTIDA.", 50, 325)
+    function terminarPartida() {
+        if (marcadorJugador1 === 10) {
+            ctx.font = "25px Arial";
+            ctx.fillStyle = "yellow";
+            ctx.fillText("EL JUGADOR 1 HA GANADO LA PARTIDA.", 50, 325);
             clearInterval(id);
-
-        } else if(marcadorJugador2 === 10){
-            ctx.font="25px Arial"
-            ctx.fillStyle = "yellow"
-            ctx.fillText("EL JUGADOR 2 HA GANADO LA PARTIDA.", 50, 325)
+        } else if (marcadorJugador2 === 10) {
+            ctx.font = "25px Arial";
+            ctx.fillStyle = "yellow";
+            ctx.fillText("EL JUGADOR 2 HA GANADO LA PARTIDA.", 50, 325);
             clearInterval(id);
-
         }
-    
     }
 
     // Funcion de suma de puntos.
 
-    function haSidoPunto(){
-
-        if(pelota.x<0 && pelota.x < -3){
+    function haSidoPunto() {
+        if (pelota.x - pelota.radio < -6) { // // La pelota cruza el límite de la izquierda (jugador 2)
             marcadorJugador2++;
             pelota.x = 300;
             pelota.y = 175;
-            pelota.moverPelota();
-        } else if(pelota.x>600 && pelota.x<602){
+        } else if (pelota.x + pelota.radio > 605) { // La pelota cruza el límite de la derecha (jugador 2)
             marcadorJugador1++;
             pelota.x = 300;
             pelota.y = 175;
-            pelota.moverPelota();
         }
-
     }
 
-    // Funcion para detectar colisiones.
-
-    /* function colisionConJugador(){
-
-        if (( R1Der > R2Izq ) & ( R1Izq < R2Der ) & ( R1Up > R2Down) & ( R1Down < R2Up) ) {
-        }
-
-    */ 
         
     // Funcion para mostrar el marcador.
     function pintarMarcador(){
@@ -203,5 +202,6 @@ window.onload = function () {
     ctx = canvas.getContext("2d");
 
     document.getElementById("start").onclick = empezarPartida; // Manejador para ejecutar la funcion de empezarPartida.
-    
+
+    document.getElementById("restart").onclick = reiniciarPartida; // Manejador para ejecutar la funcion de reiniciarPartida.
 };

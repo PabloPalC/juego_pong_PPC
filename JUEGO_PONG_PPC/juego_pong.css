@@ -16,6 +16,8 @@ button {
     border: dashed 2px;
     font-size: large;
     border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
 }
 
 div {
@@ -26,3 +28,12 @@ div {
     text-align: center;
 
 }
+
+#start {
+    margin-right: 15px; /* Separación específica a la derecha */
+}
+
+#restart {
+    margin-left: 15px; /* Separación específica a la izquierda */
+}
+
