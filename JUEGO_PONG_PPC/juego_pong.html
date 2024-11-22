@@ -10,10 +10,28 @@
 </head>
 
 <body>
-    <div>
-        <button id="start">START</button>
-        <button id="pause">PAUSE</button>
-        <button id="restart">RESTART</button>
+    <section class="controles">
+        <h2>Controles:</h2>
+        <div>
+            <h4>Arriba</h4>
+            <img src="assets/img/arrowUp.png" alt="Flecha arriba" class="controlesFoto">
+        </div>
+        <div>
+            <h4>Abajo</h4>
+            <img src="assets/img/arrowDown.png" alt="Flecha abajo" class="controlesFoto">
+        </div>
+        <div>
+            <h4>Pause</h4>
+            <img src="assets/img/escape.png" alt="Tecla Escape" class="controlesFoto">
+        </div>
+    </section>
+
+    <div class="canvas-container">
+        <div class="botones">
+            <button id="start">START</button>
+            <button id="pause">PAUSE</button>
+            <button id="restart">RESTART</button>
+        </div>
         <br>
         <canvas id="miCanvas" width="600" height="350"></canvas>
     </div>
