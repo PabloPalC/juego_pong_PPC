@@ -161,17 +161,26 @@ window.onload = function () {
 
     function pausarPartida() {
 
+           if(pausado===false){
+
             clearInterval(id);
+
             console.log("PAUSE");
+
             pausado=true;
 
-            if(pausado===false){
+           } else if(pausado===true){
+
             setInterval(id);
+
             console.log("NO PAUSE")
+            
             pausado=false;
         }
     }
+
     // Detectar teclas
+
     function activaMovimiento(evt) {
         if (evt.keyCode === 38) yArriba = true;
         if (evt.keyCode === 40) yAbajo = true;
