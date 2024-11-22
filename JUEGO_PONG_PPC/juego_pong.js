@@ -1,8 +1,10 @@
 window.onload = function () {
+
     const TOPESUPERIOR = 10;
     const TOPEINFERIOR = 265;
     const fps = 60;
     const botonStart = document.getElementById("start");
+    const botonPause = document.getElementById("pause");
     let canvas, ctx;
     let jugador1, jugador2, pelota;
     let yArriba, yAbajo;
@@ -10,6 +12,7 @@ window.onload = function () {
     let marcadorJugador2 = 9;
     let id;
     let pausado = false;
+    let partidaActiva = false;
 
     // Clase para la pelota
     class Ball {
@@ -24,12 +27,14 @@ window.onload = function () {
         }
 
         moverPelota() {
+
             // Actualiza la posición según la dirección (ángulo)
 
             this.x += this.velocidad * this.direccionX;
             this.y += this.velocidad * this.direccionY;
 
             // Rebote en los bordes de arriba y abajo
+
             if (this.y - this.radio <= 0 || this.y + this.radio >= 350) {
                 this.direccionY *= -1; // Invierte la dirección al lado contrario
             }
@@ -71,6 +76,8 @@ window.onload = function () {
         pintarPong();
         id = setInterval(pintarPong, 1000 / fps);
         botonStart.disabled = true;
+        botonPause.disabled = false;
+        partidaActiva = true;
     }
 
     // Función para reiniciar el juego
@@ -83,6 +90,9 @@ window.onload = function () {
         jugador2 = new Jugadores(570);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         document.getElementById("start").disabled = false;
+        pausado = false;
+        partidaActiva = false;
+        botonPause.disabled = false;
         pintarMarcador();
     }
 
@@ -98,16 +108,18 @@ window.onload = function () {
 
         if (yArriba) jugador1.generarPosicionArriba();
         if (yAbajo) jugador1.generarPosicionAbajo();
-
+        
         moverJugador2();
 
         pelota.moverPelota();
 
+        colisionConJugador();
 
         pintarMarcador();
     }
 
     // Movimiento IA del jugador 2. Provisional (Ejemplo)
+
     function moverJugador2() {
 
         if (pelota.y < jugador2.y + jugador2.altura / 2) {
@@ -120,7 +132,32 @@ window.onload = function () {
         }
     }
 
+    function colisionConJugador() {
+
+    // Bordes de la pelota
+
+        let pelotaIzq = pelota.x - pelota.radio;
+        let pelotaDer = pelota.x + pelota.radio;
+        let pelotaArriba = pelota.y - pelota.radio;
+        let pelotaAbajo = pelota.y + pelota.radio;
+        
+    // Bordes del jugador 1
+
+        let jugador1Izq = jugador1.x;
+        let jugador1Der = jugador1.x + jugador1.anchura;
+        let jugador1Arriba = jugador1.y;
+        let jugador1Abajo = jugador1.y + jugador1.altura;
+        
+    // Bordes del jugador 2
+
+        let jugador2Izq = jugador2.x;
+        let jugador2Der = jugador2.x + jugador2.anchura;
+        let jugador2Arriba = jugador2.y;
+        let jugador2Abajo = jugador2.y + jugador2.altura;
+    }
+
     // Función para sumar puntos
+
     function haSidoPunto() {
         if (pelota.x - pelota.radio < -6) {
             marcadorJugador2++;
@@ -154,6 +191,8 @@ window.onload = function () {
             let texto = marcadorJugador1 === 10 ? "EL JUGADOR 1 HA GANADO." : "EL JUGADOR 2 HA GANADO.";
             ctx.fillText(texto, 100, 325);
             clearInterval(id);
+            botonPause.disabled = true;
+            partidaActiva = false;
         }
     }
 
@@ -161,7 +200,9 @@ window.onload = function () {
 
     function pausarPartida() {
 
-           if(pausado===false){
+        if (!partidaActiva) return;
+
+           if(!pausado){
 
             clearInterval(id);
 
@@ -169,9 +210,9 @@ window.onload = function () {
 
             pausado=true;
 
-           } else if(pausado===true){
+           } else if(pausado){
 
-            setInterval(id);
+            id = setInterval(pintarPong, 1000 / fps);
 
             console.log("NO PAUSE")
             
@@ -182,8 +223,10 @@ window.onload = function () {
     // Detectar teclas
 
     function activaMovimiento(evt) {
+        if (!partidaActiva) return;
         if (evt.keyCode === 38) yArriba = true;
         if (evt.keyCode === 40) yAbajo = true;
+        if (evt.keyCode === 27) pausarPartida();
     }
 
     function desactivaMovimiento(evt) {
