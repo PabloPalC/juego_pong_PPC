@@ -30,6 +30,28 @@ body {
     margin-left: 10px; 
 }
 
+.textoPong {
+    margin-top: 15px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    letter-spacing: 7px;
+    font-size: x-large;
+
+    /* Sombreado*/
+
+    text-shadow: 
+    0 0 15px #0000ff,  
+    0 0 10px #0004ff, 
+    0 0 20px #d6230b, 
+    0 0 20px #cf0909, 
+    0 0 30px #c90909; 
+}
+
 button {
     background-color: black;
     color: white;
