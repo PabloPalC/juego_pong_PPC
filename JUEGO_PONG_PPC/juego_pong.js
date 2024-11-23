@@ -399,6 +399,3 @@ window.onload = function () {
     document.getElementById("pause").onclick = pausarPartida;
 
 };
-
-
-
