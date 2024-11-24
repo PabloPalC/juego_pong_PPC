@@ -2,11 +2,16 @@ window.onload = function () {
 
     // Declaracion de variables.
 
-    const TOPESUPERIOR = 0;
-    const TOPEINFERIOR = 200;
+    const TOPESUPERIOR = 10;
+    const TOPEINFERIOR = 190;
     const fps = 60;
     const botonStart = document.getElementById("start");
     const botonPause = document.getElementById("pause");
+    const sonidoJugador = new Audio("assets/audio/sonido_rebote_pelota.mp3");
+    const sonidoPared = new Audio("assets/audio/rebote_pared.mp3");
+    const sonidoGol = new Audio("assets/audio/sonido_gol.mp3");
+    const sonidoGanador = new Audio("assets/audio/sonido_ganador.mp3");
+
     let canvas, ctx;
     let jugador1, jugador2, pelota;
     let yArriba, yAbajo;
@@ -43,6 +48,7 @@ window.onload = function () {
             // Rebote en los bordes de arriba y abajo.
 
             if (this.y - this.radio <= 0 || this.y + this.radio >= 350) {
+                sonidoPared.play();
                 this.direccionY *= -1; // Cambia la dirección vertical
                 this.y = Math.max(this.radio, Math.min(this.y, 350 - this.radio)); // Ajusta posición
             }
@@ -70,7 +76,7 @@ window.onload = function () {
     class Jugadores {
     constructor(x, coordenadasSprite) {
         this.x = x;
-        this.y = 137;
+        this.y = 100;
         this.anchura = 50;
         this.altura = 150; // Ajustado al tamaño del sprite
         this.velocidad = 2;
@@ -102,15 +108,6 @@ window.onload = function () {
         );
     }
 }
-
-
-    // Configuración de jugadores con sprites
-
-    jugador1 = new Jugadores(15, [0, 0]); 
-
-    // Aqui creo los jugadores con la X y las coordenadas del sprite.
-
-    jugador2 = new Jugadores(535, [50, 0]);
 
     // Funcion para comenzar la partida.
 
@@ -163,9 +160,9 @@ window.onload = function () {
 
         if (marcadorJugador1 === 10 || marcadorJugador2 === 10) {
             ctx.font = "25px Arial"; // Tamaño de la letra del ctx
-            ctx.fillStyle = "yellow"; // Color del ctx
             let texto = marcadorJugador1 === 10 ? "EL JUGADOR ROJO HA GANADO LA PARTIDA." : "EL JUGADOR AZUL HA GANADO LA PARTIDA.";
             ctx.fillText(texto, 25, 325); // Pinta el texto y sus proporciones
+            sonidoGanador.play();
             clearInterval(id); // Termina la ejecución de la funcion que pinta todo.
             botonPause.disabled = true; // Deshabilita el boton de pause
             partidaActiva = false; // Pone el flag a false ya que la partida a terminado.
@@ -216,7 +213,9 @@ window.onload = function () {
 
         pelota.moverPelota(); // LLamo a la funcion que hace el movimiento de la pelota
 
-        aumentarVelocidad() // Aumenta la velocidad de la pelota si hay mas de 5 rebotes en los jugadores.
+        aumentarVelocidad(); // Aumenta la velocidad de la pelota si hay mas de 5 rebotes en los jugadores.
+
+        aumentarVelocidadJugadores(); // Aumenta la velocidad de la IA si le marcan más de 5 goles.
 
         colisionConJugador(); // Llamo a la funcion de las colisiones
 
@@ -257,24 +256,25 @@ window.onload = function () {
     
         // Bordes del jugador 1
         let jugador1Izq = jugador1.x;
-        let jugador1Der = jugador1.x + jugador1.anchura-15;
+        let jugador1Der = jugador1.x + jugador1.anchura;
         let jugador1Arriba = jugador1.y;
-        let jugador1Abajo = jugador1.y + jugador1.altura-15;
+        let jugador1Abajo = jugador1.y + jugador1.altura-10;
     
         // Bordes del jugador 2
         let jugador2Izq = jugador2.x;
-        let jugador2Der = jugador2.x + jugador2.anchura-15;
+        let jugador2Der = jugador2.x + jugador2.anchura;
         let jugador2Arriba = jugador2.y;
-        let jugador2Abajo = jugador2.y + jugador2.altura-15;
+        let jugador2Abajo = jugador2.y + jugador2.altura-10;
     
         // Colisión con jugador 1
 
         if (
-            pelotaDer-15 > jugador1Izq-15 &&              // Pelota toca borde derecho del jugador
-            pelotaIzq-15 < jugador1Der-15 &&              // Pelota toca borde izquierdo del jugador
-            pelotaAbajo-15 > jugador1Arriba-25 &&         // Pelota toca borde superior del jugador
-            pelotaArriba-15 < jugador1Abajo-25           // Pelota toca borde inferior del jugador
+            pelotaDer > jugador1Izq &&              // Pelota toca borde derecho del jugador
+            pelotaIzq < jugador1Der-20 &&           // Pelota toca borde izquierdo del jugador
+            pelotaAbajo > jugador1Arriba &&         // Pelota toca borde superior del jugador
+            pelotaArriba < jugador1Abajo           // Pelota toca borde inferior del jugador
         ) {
+            sonidoJugador.play();
             pelota.direccionX = Math.abs(pelota.direccionX); // Rebota a la derecha
             pelota.x = jugador1Der + pelota.radio; // Ajusta posición fuera del jugador
     
@@ -289,11 +289,14 @@ window.onload = function () {
         // Colisión con jugador 2
 
         if (
-            pelotaIzq-15 < jugador2Der-15 &&              // Pelota toca borde derecho del jugador
-            pelotaDer-15 > jugador2Izq-15 &&              // Pelota toca borde izquierdo del jugador
-            pelotaAbajo-15 > jugador2Arriba-25 &&         // Pelota toca borde superior del jugador
-            pelotaArriba-15 < jugador2Abajo-25            // Pelota toca borde inferior del jugador
+            pelotaIzq < jugador2Der-20 &&           // Pelota toca borde derecho del jugador
+            pelotaDer > jugador2Izq &&              // Pelota toca borde izquierdo del jugador
+            pelotaAbajo > jugador2Arriba &&         // Pelota toca borde superior del jugador
+            pelotaArriba < jugador2Abajo            // Pelota toca borde inferior del jugador
         ) {
+
+            sonidoJugador.play();
+
             pelota.direccionX = -Math.abs(pelota.direccionX); // Rebota a la izquierda
 
             pelota.x = jugador2Izq - pelota.radio; // Ajusta posición fuera del jugador
@@ -320,11 +323,13 @@ window.onload = function () {
     // Funcion para sumar punto.
 
     function haSidoPunto() {
-        if (pelota.x - pelota.radio < 15) { // Gol en el lado izquierdo
+        if (pelota.x - pelota.radio < 40) { // Gol en el lado izquierdo
             marcadorJugador2++;
+            sonidoGol.play();
             resetPelota();
-        } else if (pelota.x + pelota.radio > 585) { // Gol en el lado derecho
+        } else if (pelota.x + pelota.radio > 560) { // Gol en el lado derecho
             marcadorJugador1++;
+            sonidoGol.play();
             resetPelota();
         }
 
@@ -336,8 +341,21 @@ window.onload = function () {
     function aumentarVelocidad() {
 
         if(rebotesPelota===5){
-            pelota.velocidad += 1.5;
+            pelota.velocidad = 11;
             rebotesPelota = 0;
+        }
+    }
+
+    // Funcion para aumentar velocidad de la IA
+
+    function aumentarVelocidadJugadores() {
+
+        if(marcadorJugador2===5){
+            jugador1.velocidad = 3.5;
+        }
+
+        if(marcadorJugador1===5){
+            jugador2.velocidad = 3.5;
         }
     }
 
@@ -380,6 +398,14 @@ window.onload = function () {
         if (evt.keyCode === 40) yAbajo = false;
 
     }
+
+    // Configuración de jugadores con sprites
+
+    jugador1 = new Jugadores(15, [0, 0]); 
+
+    // Aqui creo los jugadores con la X y las coordenadas del sprite.
+
+    jugador2 = new Jugadores(535, [50, 0]);
 
     pelota = new Ball(); // Creo la pelota
 
