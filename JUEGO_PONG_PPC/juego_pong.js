@@ -289,8 +289,8 @@ window.onload = function () {
         // Colisión con jugador 2
 
         if (
-            pelotaIzq < jugador2Der-20 &&           // Pelota toca borde derecho del jugador
-            pelotaDer > jugador2Izq &&              // Pelota toca borde izquierdo del jugador
+            pelotaIzq < jugador2Der &&           // Pelota toca borde derecho del jugador
+            pelotaDer > jugador2Izq+20 &&              // Pelota toca borde izquierdo del jugador
             pelotaAbajo > jugador2Arriba &&         // Pelota toca borde superior del jugador
             pelotaArriba < jugador2Abajo            // Pelota toca borde inferior del jugador
         ) {
