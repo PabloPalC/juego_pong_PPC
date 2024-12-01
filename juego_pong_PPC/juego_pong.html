@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Pong</title>
+    <script src="juego_pong.js"></script>
+    <link rel="stylesheet" href="juego_pong.css">
+</head>
+
+<body>
+    
+    <section class="textoPong">
+        <h1>PONG GAME</h1>
+    </section>
+
+    <section class="controles">
+        <h2>Controles:</h2>
+        <div>
+            <h4>Arriba</h4>
+            <img src="assets/img/arrowUp.png" alt="Flecha arriba" class="controlesFoto">
+        </div>
+        <div>
+            <h4>Abajo</h4>
+            <img src="assets/img/arrowDown.png" alt="Flecha abajo" class="controlesFoto">
+        </div>
+        <div>
+            <h4>Pause</h4>
+            <img src="assets/img/escape.png" alt="Tecla Escape" class="controlesFoto">
+        </div>
+
+    </section>
+
+    <div class="canvas-container">
+        <div class="botones">
+            <button id="start">START</button>
+            <button id="pause">PAUSE</button>
+            <button id="restart">RESTART</button>
+        </div>
+        <br>
+        <canvas id="miCanvas" width="600" height="350"></canvas>
+    </div>
+
+    <div class="historial">
+        <h2>Historial de Partidas</h2>
+        <div id="historial-content">
+            <!-- Aquí se mostrará el historial -->
+            No hay historial de partidas.
+        </div>
+    </div>
+</body>
+
+</html>
